@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="3Q Portfolio">
+    <meta name="keywords" content="3Q, Portfolio, Projects, Web Development">
+    <meta name="author" content="RIVERA, Brianna Aliah B.">
+    <title>2nd Graded</title>
+    <link rel="stylesheet" href="styles.css">
+<style>
+  fieldset{
+    border: 2px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    width: 95%;
+    background-color: rgb(115, 134, 141);
+  }
+  #studentID, #fullName, #date, #email, #reason, #drop, #mobilePhone {
+    color: rgb(236, 236, 232);
+    background-color: rgb(89, 119, 129);
+  }
+</style>
+</head>
+
+<body>
+<form id="login">
+<fieldset>
+  <label> Student ID:
+    <input type = "number" id="studentID" required>
+  </label><br/><br/>
+  
+  <label> Full Name: 
+    <input type = "text" id="fullName" required>
+  </label><br/><br/>
+  
+  <label> Birthday: 
+    <input type = "date" id="date" required>
+  </label><br/><br/>
+  
+  <label> Email Address: 
+    <input type = "email" id="email" required>
+  </label><br/><br/>
+</fieldset><br/>
+
+<fieldset>
+  <label> Mobile Phone: 
+    <input type = "text" id="mobilePhone" required>
+  </label><br/><br/>
+  
+  <label> Grade Level </label> <br/>
+  <select id="drop">
+    <option value="grade 7">Grade Seven</option>
+    <option value="grade 8">Grade Eight</option>
+    <option value="grade 9">Grade Nine</option>
+    <option value="grade 10">Grade Ten</option>
+    <option value="grade 11">Grade Eleven</option>
+    <option value="grade 12">Grade Twelve</option>
+  </select>
+  
+  <p>Intern/Extern </p> 
+    <input type = "radio" id = "Intern" name="role" value="Intern" required>
+    <label for = "Intern">Intern </label><br/>
+    </input>
+    <input type = "radio" id = "Extern" name="role" value="Extern" required>
+    <label for = "Extern">Extern </label><br/>
+    </input>
+  </label><br/><br/>
+  
+  <label> Preferred Organization/Club </label> <br/>
+  <select id="drop">
+    <option value="Kamalayan">Kamalayan</option>
+    <option value="Invictus">Invictus</option>
+    <option value="PSHS-MC MUN">PSHS-MC MUN</option>
+    <option value="Karyo">Karyo</option>
+    <option value="Sightlines">Sightlines</option>
+    <option value="XYZ">XYZ</option>
+  </select><br/><br/>
+</fieldset><br/>
+  
+   <label> Why do you want to join? <br/>
+    <textarea id="reason" required></textarea>
+  </label><br/><br/>
+  
+  <input type="submit" value="submit">
+  <input type="reset" value="Reset">
+  
+</form>
+</body>
+</html>
