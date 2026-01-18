@@ -15,42 +15,84 @@
     padding-right: 10px;
     padding-top: 10px;
     width: 95%;
-    background-color: rgb(115, 134, 141);
+    background-color: rgb(160, 219, 240);
   }
   #studentID, #fullName, #date, #email, #reason, #drop, #mobilePhone {
-    color: rgb(236, 236, 232);
-    background-color: rgb(89, 119, 129);
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 254, 254);
   }
+  #login {
+    font-family: calibri;
+    background-color: rgb(165, 208, 238);
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 5px solid black;
+    border-radius: 10px;
+  }
+  input[type="submit"], input[type="reset"] {
+    background-color: rgb(59, 130, 174);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid rgb(120, 169, 186);
+  }
+  .blur-error {
+    border: 2px solid rgb(108, 171, 231);
+  }
+  
 </style>
+<script src="script.js" defer>
+
+function confirm() {
+  return window.confirm("Are you sure you want to submit the form?");
+}
+function reset() {
+  return window.confirm("Are you sure you want to reset the form?");
+}
+function blur() {
+  if (field.value.trim() === "") {
+    field.classList.add("error");
+  } else {
+    field.classList.remove("error");
+  }
+}
+
+</script>
 </head>
 
 <body>
-<form id="login">
+<form id="login" method="post" action="submit" onsubmit="return confirm()" onreset="return reset()">
 <fieldset>
   <label> Student ID:
-    <input type = "number" id="studentID" required>
+    <input type = "number" id="studentID" onblur="blur()" required>
   </label><br/><br/>
   
   <label> Full Name: 
-    <input type = "text" id="fullName" required>
+    <input type = "text" id="fullName" onblur="blur()" required>
   </label><br/><br/>
   
   <label> Birthday: 
-    <input type = "date" id="date" required>
+    <input type = "date" id="date" onblur="blur()" required>
   </label><br/><br/>
   
   <label> Email Address: 
-    <input type = "email" id="email" required>
+    <input type = "email" id="email" onblur="blur()" required>
   </label><br/><br/>
 </fieldset><br/>
 
 <fieldset>
   <label> Mobile Phone: 
-    <input type = "text" id="mobilePhone" required>
+    <input type = "text" id="mobilePhone" onblur="blur()" required>
   </label><br/><br/>
   
   <label> Grade Level </label> <br/>
-  <select id="drop">
+  <select id="drop" onblur="blur()" required>
     <option value="grade 7">Grade Seven</option>
     <option value="grade 8">Grade Eight</option>
     <option value="grade 9">Grade Nine</option>
@@ -60,16 +102,16 @@
   </select>
   
   <p>Intern/Extern </p> 
-    <input type = "radio" id = "Intern" name="role" value="Intern" required>
+    <input type = "radio" id = "Intern" name="role" value="Intern" onblur="blur()" required>
     <label for = "Intern">Intern </label><br/>
     </input>
-    <input type = "radio" id = "Extern" name="role" value="Extern" required>
+    <input type = "radio" id = "Extern" name="role" value="Extern" onblur="blur()" required>
     <label for = "Extern">Extern </label><br/>
     </input>
   </label><br/><br/>
   
   <label> Preferred Organization/Club </label> <br/>
-  <select id="drop">
+  <select id="drop" onblur="blur()" required>
     <option value="Kamalayan">Kamalayan</option>
     <option value="Invictus">Invictus</option>
     <option value="PSHS-MC MUN">PSHS-MC MUN</option>
@@ -80,7 +122,7 @@
 </fieldset><br/>
   
    <label> Why do you want to join? <br/>
-    <textarea id="reason" required></textarea>
+    <textarea id="reason" onblur="blur()" required></textarea>
   </label><br/><br/>
   
   <input type="submit" value="submit">
