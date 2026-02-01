@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="3Q Portfolio">
+    <meta name="keywords" content="3Q, Portfolio, Projects, Web Development">
+    <meta name="author" content="RIVERA, Brianna Aliah B.">
+    <title>3nd Graded</title>
+    <link rel="stylesheet" href="styles.css">
+<style>
+  fieldset{
+    border: 2px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    width: 95%;
+    background-color: rgb(160, 219, 240);
+  }
+  #studentID, #fullName, #date, #email, #reason, #drop, #mobilePhone, #club {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 254, 254);
+  }
+  #login {
+    font-family: calibri;
+    background-color: rgb(165, 208, 238);
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 5px solid black;
+    border-radius: 10px;
+  }
+  input[type="submit"], input[type="reset"] {
+    background-color: rgb(59, 130, 174);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid rgb(120, 169, 186);
+  }
+  .error {
+    border: 2px solid rgb(108, 171, 231);
+    background-color: rgb(108, 171, 231);
+  }
+</style>
+<script>
+function validateField(field) {
+  if (field.value === "") {
+    field.classList.add("error");
+  } else {
+    field.classList.remove("error");
+  }
+}
+function saveSignUp() {
+    let signUps = JSON.parse(localStorage.getItem("signUps")) || [];
+    if (!signUps) {
+      signUps = [];
+    }
+    const signUpsData = {
+      studentID: document.getElementById("studentID").value,
+      fullName: document.getElementById("fullName").value,
+      date: document.getElementById("date").value,
+      email: document.getElementById("email").value,
+      mobilePhone: document.getElementById("mobilePhone").value,
+      gradeLevel: document.getElementById("drop").value,
+      internExtern: document.querySelector('input[name="role"]:checked').value,
+      club: document.getElementById("club").value,
+      reason: document.getElementById("reason").value
+    };
+
+  signUps.push(signUpsData);
+  localStorage.setItem("signUps", JSON.stringify(signUps));
+  document.getElementById("msg").textContent = "Sign-Up Successful!";
+  document.getElementById("appForm").reset();
+  return false;
+  
+}
+
+function resetForm() {
+  document.getElementById("appForm").reset();
+  document.getElementById("msg").textContent = "";
+}
+
+function viewSignUps() {
+  const signUps = JSON.parse(localStorage.getItem("signUps")) || [];
+  window.location.href = "viewSignUps.html";
+
+  return false;
+}
+
+</script>
+</head>
+
+<body>
+<form id="appForm" method="post" onsubmit="return saveSignUp()" onreset="return confirmReset()">
+<fieldset>
+  <label> Student ID:
+    <input type = "number" id="studentID" onblur="validateField(this)" required>
+  </label><br/><br/>
+  
+  <label> Full Name: 
+    <input type = "text" id="fullName" onblur="validateField(this)" required>
+  </label><br/><br/>
+  
+  <label> Birthday: 
+    <input type = "date" id="date" onblur="validateField(this)" required>
+  </label><br/><br/>
+  
+  <label> Email Address: 
+    <input type = "email" id="email" onblur="validateField(this)" required>
+  </label><br/><br/>
+</fieldset><br/>
+
+<fieldset>
+  <label> Mobile Phone: 
+    <input type = "text" id="mobilePhone" onblur="validateField(this)" required>
+  </label><br/><br/>
+  
+  <label> Grade Level </label> <br/>
+  <select id="drop" onblur="validateField(this)" required>
+    <option value="grade 7">Grade Seven</option>
+    <option value="grade 8">Grade Eight</option>
+    <option value="grade 9">Grade Nine</option>
+    <option value="grade 10">Grade Ten</option>
+    <option value="grade 11">Grade Eleven</option>
+    <option value="grade 12">Grade Twelve</option>
+  </select>
+  
+  <p>Intern/Extern </p> 
+    <input type = "radio" id = "Intern" name="role" value="Intern" onblur="validateField(this)" required>
+    <label for = "Intern">Intern </label><br/>
+    </input>
+    <input type = "radio" id = "Extern" name="role" value="Extern" onblur="validateField(this)" required>
+    <label for = "Extern">Extern </label><br/>
+    </input>
+  </label><br/><br/>
+  
+  <label> Preferred Organization/Club </label> <br/>
+  <select id="club" onblur="validateField(this)" required>
+    <option value="Kamalayan">Kamalayan</option>
+    <option value="Invictus">Invictus</option>
+    <option value="PSHS-MC MUN">PSHS-MC MUN</option>
+    <option value="Karyo">Karyo</option>
+    <option value="Sightlines">Sightlines</option>
+    <option value="XYZ">XYZ</option>
+  </select><br/><br/>
+</fieldset><br/>
+  
+   <label> Why do you want to join? <br/>
+    <textarea id="reason" onblur="validateField(this)" required></textarea>
+  </label><br/><br/>
+  
+  <button type="submit" value="Submit"> Submit </button>
+  <button type="reset" value="Reset"> Reset </button>
+  <button type ="button" onclick="viewSignUps()"> View Sign-Ups </button>
+  
+  <p id="msg"></p>
+</form>
+</body>
+</html>

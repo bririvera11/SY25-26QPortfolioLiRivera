@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="3Q Portfolio">
+    <meta name="keywords" content="3Q, Portfolio, Projects, Web Development">
+    <meta name="author" content="RIVERA, Brianna Aliah B.">
+    <title>3nd Graded</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    h2, h3 {
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: rgb(170, 170, 227); 
+    }
+    tr:hover {
+        background-color: rgb(200, 200, 250);
+    }
+    tr:nth-child(even) {
+        background-color: rgb(214, 214, 250);
+    }
+    </style>
+<body>
+<h2> List of Student Sign-Ups </h2>
+<h3> By: Rivera, Brianna Aliah B. </h3>
+<a href="Q3_3GLithiumRivera.html"> Back to Form </a>
+<br><br>
+
+<label> Select Your Club: </label>
+<select id="filter" onchange="filterSignUps()">
+    <option value="Placeholder">--Select Your Club--</option>
+    <option value="Kamalayan">Kamalayan</option>
+    <option value="Invictus">Invictus</option>
+    <option value="PSHS-MC MUN">PSHS-MC MUN</option>
+    <option value="Karyo">Karyo</option>
+    <option value="Sightlines">Sightlines</option>
+    <option value="XYZ">XYZ</option>
+  </select><br/><br/>
+
+  <table id="signupsTable" border="1">
+    <thead>
+      <tr>
+        <th>Club</th>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Grade</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Intern/Extern</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+
+<script>
+    const tableBody = document.getElementById("signupsTable").getElementsByTagName("tbody")[0];
+    const filterSelect = document.getElementById("filter");
+    const totalSignUps = [];
+    const signUps = JSON.parse(localStorage.getItem("signUps")) || [];
+    if (signUps.length > 0) {
+        totalSignUps.push(...signUps);
+    }
+
+    function display(data){
+        tableBody.innerHTML = "";
+        message.textContent = "";
+        total.textContent = "";
+        
+        if (data.length === 0) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td colspan="7"> No sign-ups available. </td>`;
+            tableBody.appendChild(row);
+            return
+        }
+            data.forEach(signUp => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${signUp.club}</td>
+                <td>${signUp.studentID}</td>
+                <td>${signUp.fullName}</td>
+                <td>${signUp.gradeLevel}</td>
+                <td>${signUp.email}</td>
+                <td>${signUp.mobilePhone}</td>
+                <td>${signUp.internExtern}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        total.textContent = `Total Sign-Ups: ${data.length}`;
+    }
+    function filterSignUps(){
+        const selectedClub = filterSelect.value;
+        if (selectedClub === "Placeholder") {
+            display(totalSignUps);
+        } else {
+            const filteredData = totalSignUps.filter(signUp => signUp.club === selectedClub);
+            display(filteredData);
+        }
+
+    }
+    window.onload = function() {
+        display(totalSignUps);
+    };
+
+    display(totalSignUps);
+</script>
+<p id="message"></p>
+<p id="total"></p>
+
+</body>
+</html>
