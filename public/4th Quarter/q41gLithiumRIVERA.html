@@ -20,12 +20,18 @@
             <input type = "text" id = "yearMov" required placeholder = "Input Movie's Publication Date">
             </label> </br> </br>
 
-            <label> Genre: 
-            <input type = "text" id = "genreMov" required placeholder = "Input Movie's Genre">
-            </label> </br> </br>
+            <label> Genre: </label> <br/>
+            <select id="drop" onblur="validateField(this)" required>
+            <option value="actionMov">Action</option>
+            <option value="horrorMov">Horror</option>
+            <option value="comedyMov">Comedy</option>
+            <option value="thrillerMov">Thriller</option>
+            <option value="dramaMov">Drama</option>
+            <option value="romanceMov">Romance</option>
+            <option value="romcomMov">Romance-Comedy</option>
+            </select>
 
-            <label> Rating:
-            <input 
-            </label>
+            <div class = "ratingMov">
+                <span class = "starRate" 
         </fieldset>
 </body>
