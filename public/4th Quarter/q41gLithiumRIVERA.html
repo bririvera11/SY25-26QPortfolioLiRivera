@@ -6,8 +6,78 @@
     <meta name="description" content="4Q Portfolio">
     <meta name="keywords" content="4Q, Portfolio, Projects, Web Development">
     <meta name="author" content="RIVERA, Brianna Aliah B.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(255, 255, 255);
+            margin: 0;
+            padding: 20px;
+        }
+        .movieCard {
+            background-color: rgb(240, 240, 240);
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        fieldset {
+            border: 2px solid black;
+            padding: 20px;
+            background-color: rgb(255, 255, 255);
+        }
+        legend {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgb(0, 0, 0);
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: rgb(0, 0, 0);
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #ratingMov {
+            font-size: 1.5em;
+            color: yellow;
+            cursor: pointer;
+        }
+        .starRate {
+            font-size: 1.5em;
+            color: rgb(180, 177, 161);
+            cursor: pointer;
+        }
+        #btnAdd {
+            background-color: rgb(59, 130, 174);
+        }
+        #btnAdd:hover {
+            background-color: rgb(59, 130, 174);
+        }
+        #movieList {
+            margin-top: 20px;
+        }
+
+        
+
+    </style>
 </head>
 <body>
+    <main id = "movieCard">
     <form id = "formMovies">
         <fieldset>
             <legend> Add a Movie </legend>
@@ -20,18 +90,116 @@
             <input type = "text" id = "yearMov" required placeholder = "Input Movie's Publication Date">
             </label> </br> </br>
 
-            <label> Genre: </label> <br/>
+            <label> Genre:</label>
             <select id="drop" onblur="validateField(this)" required>
-            <option value="actionMov">Action</option>
-            <option value="horrorMov">Horror</option>
-            <option value="comedyMov">Comedy</option>
-            <option value="thrillerMov">Thriller</option>
-            <option value="dramaMov">Drama</option>
-            <option value="romanceMov">Romance</option>
-            <option value="romcomMov">Romance-Comedy</option>
-            </select>
+            <option value="Action">Action</option>
+            <option value="Horror">Horror</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Drama">Drama</option>
+            <option value="Drama-Comedy">Drama-Comedy</option>
+            <option value="Romance">Romance</option>
+            <option value="Romance-Comedy">Romance-Comedy</option>
+            </select> </br> </br>
 
             <div class = "ratingMov">
-                <span class = "starRate" 
+                <span class = "starRate" data-value="1">&#9733;</span>
+                <span class = "starRate" data-value="2">&#9733;</span>
+                <span class = "starRate" data-value="3">&#9733;</span>
+                <span class = "starRate" data-value="4">&#9733;</span>
+                <span class = "starRate" data-value="5">&#9733;</span>
+            </div> </br> 
+
+            <button type = "submit" id = "btnAdd"> Add Movie </button> </br> </br>
         </fieldset>
+    </form>
+
+    <fieldset>
+        <legend> Movie List </legend>
+        <ul id = "movieList"></ul>
+    </fieldset>
+    </main>
+
+    <script>
+        // initializes the variables
+        const formMovies = document.getElementById("formMovies");
+        const movieList = document.getElementById("movieList");
+        const starRates = document.querySelectorAll(".starRate");
+        let ratingValue = 0;
+
+        // loops through the star ratings ; it also adds an event listener that updates the value when the star is clicked
+        starRates.forEach(star => {
+            star.addEventListener("click", () => {
+                ratingValue = star.getAttribute("data-value");
+                updateStarRating(ratingValue);
+            });
+        });
+        
+        // updates the star visually by changing the color based on the user's selection
+        function updateStarRating(value) {
+            starRates.forEach(star => {
+                if (star.getAttribute("data-value") <= value) {
+                    star.style.color = "yellow";
+                } else {
+                    star.style.color = "gray";
+                }
+            });
+        }
+
+        // submission of the form 
+        formMovies.addEventListener("submit", function(event) {
+            event.preventDefault();
+            // gets the values from the form field 
+            const title = document.getElementById("titleMov").value;
+            const year = document.getElementById("yearMov").value;
+            const genre = document.getElementById("drop").value;
+
+            // structure for the movie JS object that will be stored in the local storage
+            const movie = {
+                title: title,
+                year: year,
+                genre: genre,
+                rating: ratingValue
+            };
+
+            // reads the existing data and adds new to the array ; it also saves the updated version to the local storage
+            const movies = JSON.parse(localStorage.getItem("movies")) || [];
+           
+            // pushes the new movie to the array and saves it 
+            movies.push(movie);
+
+            // saves and converts to store the data
+            localStorage.setItem("movies", JSON.stringify(movies));
+
+            // resets the form for the next submission of the user
+            formMovies.reset();
+            updateStarRating(0);
+            renderMovies();
+        });
+
+        function renderMovies() {
+
+            // retrieves and parses the data
+            const movies = JSON.parse(localStorage.getItem("movies")) || [];
+            
+            // clears the current
+            movieList.innerHTML = "";
+
+            // loops the array and creates new list
+            movies.forEach(movie => {
+                const movieItem = document.createElement("li");
+
+                // to get/ouput the stars
+                const stars = "★".repeat(movie.rating);
+
+                // sets using a template then appends the item
+                movieItem.innerHTML = `${movie.title} (${movie.year}) - ${movie.genre} , Rating: <span style="color: yellow;">${stars}</span>`;
+                movieList.appendChild(movieItem);
+            });
+        }
+
+        // runs the function so when a new entry is saved, it appears
+        renderMovies();
+    </script>
 </body>
+</html>
