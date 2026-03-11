@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="4Q Portfolio">
+    <meta name="keywords" content="4Q, Portfolio, Projects, Web Development">
+    <meta name="author" content="RIVERA, Brianna Aliah B.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(255, 255, 255);
+            margin: 0;
+            padding: 20px;
+        }
+        .movieCard {
+            background-color: rgb(240, 240, 240);
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        fieldset {
+            border: 2px solid black;
+            padding: 20px;
+            background-color: rgb(255, 255, 255);
+        }
+        legend {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgb(0, 0, 0);
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: rgb(0, 0, 0);
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #ratingMov {
+            font-size: 1.5em;
+            color: yellow;
+            cursor: pointer;
+        }
+        .starRate {
+            font-size: 1.5em;
+            color: rgb(180, 177, 161);
+            cursor: pointer;
+        }
+        #btnAdd {
+            background-color: rgb(59, 130, 174);
+        }
+        #btnAdd:hover {
+            background-color: rgb(59, 130, 174);
+        }
+        #movieList {
+            margin-top: 20px;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+    <main id = "movieCard">
+    <form id = "formMovies">
+        <fieldset>
+            <legend> Add a Movie </legend>
+            
+            <label> Movie:
+            <input type = "text" id = "titleMov" required placeholder = "Input a Movie Name">
+            </label> </br> </br>
+
+            <label> Year:
+            <input type = "text" id = "yearMov" required placeholder = "Input Movie's Publication Date">
+            </label> </br> </br>
+
+            <label> Genre:</label>
+            <select id="drop" onblur="validateField(this)" required>
+            <option value="Action">Action</option>
+            <option value="Horror">Horror</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Drama">Drama</option>
+            <option value="Drama-Comedy">Drama-Comedy</option>
+            <option value="Romance">Romance</option>
+            <option value="Romance-Comedy">Romance-Comedy</option>
+            </select> </br> </br>
+
+            <div class = "ratingMov">
+                <span class = "starRate" data-value="1">&#9733;</span>
+                <span class = "starRate" data-value="2">&#9733;</span>
+                <span class = "starRate" data-value="3">&#9733;</span>
+                <span class = "starRate" data-value="4">&#9733;</span>
+                <span class = "starRate" data-value="5">&#9733;</span>
+            </div> </br> 
+
+            <button type = "submit" id = "btnAdd"> Add Movie </button> </br> </br>
+        </fieldset>
+    </form>
+
+    <fieldset>
+        <legend> Movie List </legend>
+        <ul id = "movieList"></ul>
+    </fieldset>
+    </main>
+
+    <script>
+        // initializes the variables
+        const formMovies = document.getElementById("formMovies");
+        const movieList = document.getElementById("movieList");
+        const starRates = document.querySelectorAll(".starRate");
+        let ratingValue = 0;
+
+        // loops through the star ratings ; it also adds an event listener that updates the value when the star is clicked
+        starRates.forEach(star => {
+            star.addEventListener("click", () => {
+                ratingValue = star.getAttribute("data-value");
+                updateStarRating(ratingValue);
+            });
+        });
+        
+        // updates the star visually by changing the color based on the user's selection
+        function updateStarRating(value) {
+            starRates.forEach(star => {
+                if (star.getAttribute("data-value") <= value) {
+                    star.style.color = "yellow";
+                } else {
+                    star.style.color = "gray";
+                }
+            });
+        }
+
+        // submission of the form 
+        formMovies.addEventListener("submit", function(event) {
+            event.preventDefault();
+            // gets the values from the form field 
+            const title = document.getElementById("titleMov").value;
+            const year = document.getElementById("yearMov").value;
+            const genre = document.getElementById("drop").value;
+
+            // structure for the movie JS object that will be stored in the local storage
+            const movie = {
+                title: title,
+                year: year,
+                genre: genre,
+                rating: ratingValue
+            };
+
+            // reads the existing data and adds new to the array ; it also saves the updated version to the local storage
+            const movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+            // checks and updates if the index contains the same movie input
+            const alreadyMov = movies.findIndex(m => m.title.toLowerCase().trim() === title.toLowerCase().trim() && m.year === year && m.genre === genre);
+
+            if (alreadyMov !== -1)
+            {
+                // calculates the average
+                const oldMovRate = parseFloat(movies[alreadyMov].rating);
+                const newMovRate = parseFloat(ratingValue);
+                movies[alreadyMov].rating = (oldMovRate + newMovRate) / 2;
+            
+            }
+            else{
+                // creates a new object if it doesn't exist yet
+                const movie = {
+                title: title,
+                year: year,
+                genre: genre,
+                rating: ratingValue
+            };
+
+            // pushes the new movie to the array and saves it 
+            movies.push(movie);
+        }
+            // saves and converts to store the data
+            localStorage.setItem("movies", JSON.stringify(movies));
+
+            // resets the form for the next submission of the user
+            formMovies.reset();
+            updateStarRating(0);
+            renderMovies();
+        });
+
+        // the function that allows the user to delete their movie entry
+        function deleteMov(index){
+
+            // this is so that the user can avoid accidental deletions
+            if (confirm("Are you sure you want to delete?")) 
+            {
+                const movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+                // removes one at a specific index loc
+                movies.splice(index, 1)
+
+                // updates
+                localStorage.setItem("movies", JSON.stringify(movies)); 
+                
+                // re-render the list
+                renderMovies(); 
+            }
+        }
+
+        function renderMovies() {
+
+            // retrieves and parses the data
+            const movies = JSON.parse(localStorage.getItem("movies")) || [];
+            
+            // clears the current
+            movieList.innerHTML = "";
+
+            // loops the array and creates new list
+            movies.forEach((movie, index) => {
+                const movieItem = document.createElement("li");
+
+                // for the stars
+                const starCount = Math.round(movie.rating);
+                const stars = "★".repeat(starCount);
+
+                // fixes it to one decimal place
+                const rateNum = parseFloat(movie.rating).toFixed(1); 
+
+                // sets using a template then appends the item
+                movieItem.innerHTML = 
+                `${movie.title} (${movie.year}) - ${movie.genre} , Rating: <span style="color: yellow;">${stars}</span>
+                (${rateNum}) <button onclick = "deleteMov(${index})" style = "margin-left: 10px;"> Delete </button>`;
+                movieList.appendChild(movieItem);
+            });
+        }
+        // runs the function so when a new entry is saved, it appears
+        renderMovies();
+    </script>
+</body>
+</html>
