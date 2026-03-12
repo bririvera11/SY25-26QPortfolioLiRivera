@@ -164,10 +164,30 @@
 
             // reads the existing data and adds new to the array ; it also saves the updated version to the local storage
             const movies = JSON.parse(localStorage.getItem("movies")) || [];
-           
+
+            // checks and updates if the index contains the same movie input
+            const alreadyMov = movies.findIndex(m => m.title.toLowerCase().trim() === title.toLowerCase().trim() && m.year === year && m.genre === genre);
+
+            if (alreadyMov !== -1)
+            {
+                // calculates the average
+                const oldMovRate = parseFloat(movies[alreadyMov].rating);
+                const newMovRate = parseFloat(ratingValue);
+                movies[alreadyMov].rating = (oldMovRate + newMovRate) / 2;
+            
+            }
+            else{
+                // creates a new object if it doesn't exist yet
+                const movie = {
+                title: title,
+                year: year,
+                genre: genre,
+                rating: ratingValue
+            };
+
             // pushes the new movie to the array and saves it 
             movies.push(movie);
-
+        }
             // saves and converts to store the data
             localStorage.setItem("movies", JSON.stringify(movies));
 
@@ -176,6 +196,25 @@
             updateStarRating(0);
             renderMovies();
         });
+
+        // the function that allows the user to delete their movie entry
+        function deleteMov(index){
+
+            // this is so that the user can avoid accidental deletions
+            if (confirm("Are you sure you want to delete?")) 
+            {
+                const movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+                // removes one at a specific index loc
+                movies.splice(index, 1)
+
+                // updates
+                localStorage.setItem("movies", JSON.stringify(movies)); 
+                
+                // re-render the list
+                renderMovies(); 
+            }
+        }
 
         function renderMovies() {
 
@@ -186,18 +225,23 @@
             movieList.innerHTML = "";
 
             // loops the array and creates new list
-            movies.forEach(movie => {
+            movies.forEach((movie, index) => {
                 const movieItem = document.createElement("li");
 
-                // to get/ouput the stars
-                const stars = "★".repeat(movie.rating);
+                // for the stars
+                const starCount = Math.round(movie.rating);
+                const stars = "★".repeat(starCount);
+
+                // fixes it to one decimal place
+                const rateNum = parseFloat(movie.rating).toFixed(1); 
 
                 // sets using a template then appends the item
-                movieItem.innerHTML = `${movie.title} (${movie.year}) - ${movie.genre} , Rating: <span style="color: yellow;">${stars}</span>`;
+                movieItem.innerHTML = 
+                `${movie.title} (${movie.year}) - ${movie.genre} , Rating: <span style="color: yellow;">${stars}</span>
+                (${rateNum}) <button onclick = "deleteMov(${index})" style = "margin-left: 10px;"> Delete </button>`;
                 movieList.appendChild(movieItem);
             });
         }
-
         // runs the function so when a new entry is saved, it appears
         renderMovies();
     </script>
