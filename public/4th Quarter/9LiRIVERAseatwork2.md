@@ -109,6 +109,6 @@
       - 
 
     c. How do you differentiate sticky from fixed (you can research on sticky)?
-      - 
-
+      - Sticky allows the user to achieve both relative and fixed in one element. It will allow you to scroll like relative until a certain threshold is achieved as afterwards it will stay as fixed. 
+      
     d. If you were designing a webpage for a school event, how might you use positioning to highlight important information? Please give concrete examples.
