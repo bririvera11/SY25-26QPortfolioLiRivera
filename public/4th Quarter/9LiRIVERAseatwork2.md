@@ -94,8 +94,16 @@
 
 - Challenge: 
     * What changes that you have to do on the code that will position .notice box on the top right corner of the .content box? Please write the code on paper as well (both html and css on the part of .notice and .content).
+      - Move the .notice element inside .content
+      - Change the position of .content to relative
+      - Use .notice top and .notice right and equate the values to 0
+
     * Try to change the position of .content to relative then to fixed. What do you observed each time?
+      - Relative stays as in in the page.
+      - Fixed makes the element stick to the viewport/screen so when you scroll it goes with it. 
+
     * What do you observe on about the effect of z-index on .notice and .content boxes?
+      - Greater z-index places the element in front of the other
 
 3. Please answer the following reflection questions (15 minutes)
 
@@ -106,7 +114,7 @@
       - Fixed: It stays with the screen view; Fixed and moves along with the view
 
     b. How does absolute positioning depend on its parent element?
-      - 
+      - It places the element to the nearest parent element that has a position.
 
     c. How do you differentiate sticky from fixed (you can research on sticky)?
       - Sticky allows the user to achieve both relative and fixed in one element. It will allow you to scroll like relative until a certain threshold is achieved as afterwards it will stay as fixed. 
